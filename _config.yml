@@ -16,7 +16,8 @@
 title: Fmbah
 email: zhaoxin26@yahoo.com
 description: >- # this means to ignore newlines until "baseurl:"
-  愿各位心想事成，繁华的城市，带给我们的不只是躁动
+  愿各位心想事成，繁华的城市，带给我们的不只是躁动,
+  欢迎加入JavaSpringDocker族落QQ群(876327097)，^^~~~
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: zhaoxin26@yahoo.com
@@ -39,3 +40,6 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+paginate: 5
+paginate_path: "_posts/page:num"
