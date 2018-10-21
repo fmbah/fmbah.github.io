@@ -37,6 +37,8 @@ categories: jekyll update
             gem "jekyll-feed", "~> 0.6"
             gem "jekyll-paginate"
             end
+
+            2018-10-21补充：jekyll --help; bundle --help； gem --help； 活用以上三个命令中的内容，关键时刻比谷歌百度还管用，如：报错提示依赖版本问题，第一个想法就是更新当前文件夹内版本！！！
     9. 登录github，创建仓库名为username.github.io，username为github用户名，然后将刚刚建立的静态网站上传到此仓库中，通过https://username.github.io即可访问。
 
 
