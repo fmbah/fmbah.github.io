@@ -1,0 +1,51 @@
+---
+layout: post
+title:  "uni-app实战1"
+date:   2019-12-25 22:58:23 +0800
+categories: Uni App
+--- 
+
+借鉴处：
+1. [Hcoder](http://www.hcoder.net/tutorials/info_1369.html) 
+
+
+
+
+### 知识点
+
+- v-bind指令对属性的数据绑定：MVVM与数据双向绑定
+    - :value 
+    - @input
+    - e.detail
+- 页面中展示：数组、对象
+    - arr: [0,1,2,3]；{{arr[0]}}
+    - student: {age: 18}；{{student.age}}
+    - {{student.age > 18 ? '成年' : '未成年'}}
+- 页面路由、标题配置
+    - navigationBarTitleText
+    - [参考globalstyle](https://uniapp.dcloud.io/collocation/pages?id=globalstyle)
+- 项目结构
+    - [app.vue](https://uniapp.dcloud.io/collocation/App)：整个项目全局配置，样式，生命周期
+    - [manifest.json](https://uniapp.dcloud.io/collocation/manifest)：发布项目配置设置
+    - [uni.scss](https://uniapp.dcloud.io/collocation/uni-scss)：内置样式
+- [生命周期](https://uniapp.dcloud.io/collocation/frame/lifecycle)
+    - 应用生命周期
+        - onLaunch：当uni-app 初始化完成时触发（全局只触发一次）
+        - onShow：当 uni-app 启动，或从后台进入前台显示
+        - onHide：当 uni-app 从前台进入后台
+        - onError：当 uni-app 报错时触发
+        - onUniNViewMessage：对 nvue 页面发送的数据进行监听
+    - 页面生命周期
+- [尺寸单位](https://uniapp.dcloud.io/frame?id=%e5%b0%ba%e5%af%b8%e5%8d%95%e4%bd%8d)
+- [事件处理器](https://uniapp.dcloud.io/use?id=%e4%ba%8b%e4%bb%b6%e5%a4%84%e7%90%86%e5%99%a8)
+- [条件渲染](https://uniapp.dcloud.io/use?id=%e6%9d%a1%e4%bb%b6%e6%b8%b2%e6%9f%93)
+    - v-if
+    - v-show: display: none
+    - 三元表达式
+
+        
+
+    
+
+
+
