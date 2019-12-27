@@ -26,7 +26,10 @@ categories: Uni App
     <!-- #ifdef APP-PLUS -->
         <view>
             1. 安装爱思助手连接IOS手机，HBuilderX重启
-            2. 只在安卓/IOS编译
+            2. 安装夜神模拟器，拷贝图标-属性-目标地址
+                HbuilderX运行，配置adb路径为目标地址
+                Android模拟器端口：62001（夜神第一个模拟器端口）
+            3. 只在安卓/IOS编译
         </view>
     <!-- #endif -->
     <!-- #ifndef MP -->
