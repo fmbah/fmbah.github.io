@@ -21,7 +21,31 @@ categories: Uni App
     - 嵌套循环下标必须设置不同
 
 - [跨端兼容](https://uniapp.dcloud.io/platform)
-    - 
+    - 条件编译；页面中如下
+    ````
+    <!-- #ifdef APP-PLUS -->
+        <view>
+            1. 安装爱思助手连接IOS手机，HBuilderX重启
+            2. 只在安卓/IOS编译
+        </view>
+    <!-- #endif -->
+    <!-- #ifndef MP -->
+        <view>
+            不在小程序全端编译，只在IOS/安卓/H5编译
+        </view>
+    <!-- #endif -->
+    ````
+    - 条件编译；JS中如下
+    ````
+    // #ifdef H5
+    console.log('只在H5中编译')
+    // #endif
+    ````
+    - 条件编译；CSS中如下
+    ````
+    /* #ifdef H5 */
+    /* #endif */
+    ````
         
 
     
