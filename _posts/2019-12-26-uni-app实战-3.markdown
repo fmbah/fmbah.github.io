@@ -29,6 +29,8 @@ categories: Uni App
             2. 安装夜神模拟器，拷贝图标-属性-目标地址
                 HbuilderX运行，配置adb路径为目标地址
                 Android模拟器端口：62001（夜神第一个模拟器端口）
+                - 2019-12-28
+                    - 出现链接不上模拟器问题：找到夜神安装路劲，进入到bin目录，找到debugReport.bat这个文件运行，重启hbx即可
             3. 只在安卓/IOS编译
         </view>
     <!-- #endif -->

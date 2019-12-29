@@ -1,0 +1,214 @@
+---
+layout: post
+title:  "uni-app实战5"
+date:   2019-12-28 15:00:00 +0800
+categories: Uni App
+--- 
+
+### 项目初始化
+1. 文件-新建-项目
+    1. uni-app
+    2. 项目名称：next-superhero-dev
+    3. 存储路径
+2. 更改标题
+    - pages.json
+        - globalStyle（全局配置）：
+            - navigationBarTitleText：‘超英预告’
+        - pages数组中style（单独页面配置）：
+            - navigationBarTitleText：‘’
+3. 创建搜索、个人页面
+    - 去除index.vue中无用内容
+    - 点击pages文件夹创建搜索页面：search
+    - 点击pages文件夹创建个人页面：me
+    - 注释App.vue中应用生命周期无用函数
+4. 配置导航栏-tabBar
+    - pages.json新增如下内容
+    ````
+    "tabBar":{
+		"color":"#bfbfbf",
+		"selectedColor":"#515151",
+		"borderStyle":"black",
+		"backgroundColor":"#FFFFFF",
+		"list":[
+			{
+				"pagePath": "pages/index/index",
+				"text":"首页"
+				// ,"iconPath":""
+				// "selectedIconPath":""
+			},
+			{
+				"pagePath": "pages/search/search",
+				"text":"搜索"
+			},
+			{
+				"pagePath": "pages/me/me",
+				"text": "我的"
+			}
+			
+		]
+	}
+    ````
+5. 全局样式
+    - 在App.vue的样式表中添加如下内容：
+    ````
+    /*每个页面公共css */
+	.page {
+		width: 100%;
+		height: 100%;
+		background: #f7f7f7;
+		/* 绝对定位，以元素的容器作为参考系 */
+		position: absolute;
+	}
+    ````
+6. [轮播图-swiper](https://uniapp.dcloud.io/component/swiper)
+
+7. [原生导航栏禁用](https://uniapp.dcloud.io/collocation/pages?id=app-titlenview)
+    ````
+    "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				// 如果 h5 节点没有配置，默认会使用 app-plus 下的配置。
+				"app-plus": {
+					"titleNView": false //禁用原生导航栏
+				}
+			}
+		}
+    ````
+8. `轮播图调用接口`
+	- 参考：https://uniapp.dcloud.io/api/request/request
+	````
+	<swiper-item v-for="(carousel,index) in carouselList" v-bind:key="carouselList.id">
+		<image :src="carousel.image" mode="" class="carousel" ></image>
+	</swiper-item>
+	data() {
+			return {
+				carouselList: []
+			}
+		},
+		onLoad() {
+			// 避免出现es6语法支持内放方法直接this方法调用
+			var me = this;
+			uni.request({
+				url: 'http://106.13.81.173:9280/carousel',
+				// data: {
+				// 	text: 'uni.request'
+				// },
+				// header: {
+				// 	'custom-header': 'hello' //自定义请求头信息
+				// },
+				success: (res) => {
+					console.log(res.data);
+					me.carouselList = res.data;
+				}
+			});
+		},
+	````
+9. `公共js封装`
+	- 点击项目名称新建目录[common]
+	- 点击目录common新建js文件，命名[common.js]
+	````
+	// 正式-后端服务器地址
+	// const serverUrl = "";
+	// 测试-后端服务器地址
+	// const serverUrl = "";
+	// 本地-后端服务器地址
+	const serverUrl = "http://106.13.81.173:9280";
+	// 将变量暴露出去,给引用方调用
+	export default {
+		serverUrl
+	}
+	````
+	- 调用方
+	````
+	// 引用common.js
+	import common from "../../common/common.js";
+	
+	
+	export default {
+		data() {
+			return {
+				carouselList: []
+			}
+		},
+		onLoad() {
+			// 避免出现es6语法支持内放方法直接this方法调用
+			var me = this;
+			// 获取服务器地址
+			var serverUrl = common.serverUrl;
+			
+			debugger;
+			
+			uni.request({
+				url: serverUrl + '/carousel',
+	````
+	1. 如：请求地址
+
+10. 使用`挂载`实现全局变量
+	- 在main.js中新增如下内容
+	````
+	// 自定义属性挂载全局变量,各个文件可通过this直接调用
+	Vue.prototype.serverUrl = "http://106.13.81.173:9280";
+	````
+	- 调用方：
+	````
+	// 避免出现es6语法支持内放方法直接this方法调用
+	var me = this;
+	// 从全局变量中获取服务器地址
+	var serverUrl = me.serverUrl;
+	````
+11. 微信小程序预览
+	- 申请微信小程序开发者
+		- 工具内配置appid
+		- 预览：手动|自动
+	- 微信request注意事项
+		- https：域名备案
+		- 微信小程序后台-开发者设置-配置域名
+		- 开发工具根据当前情况选择性勾选检查域名证书
+12. 实战设置图标+标题样式
+	
+	````
+	<!-- index.vue中新增如下内容 -->
+	<!-- 热门视频 start -->
+		<view class="page-block hot_video"><!-- 圈出热门视频范围 -->
+			<view class="hot_image_title_wrapper"><!-- 设置内部元素对齐方式 -->
+				<view class=""><!-- 设置图片样式 -->
+					<image src="../../static/index/hot0.png" class="hot_image"></image>
+				</view>
+				<view class="hot_title"><!-- 设置文字样式 -->
+					热门视频
+				</view>
+			</view>
+		</view>
+		<!-- 热门视频 end -->
+	````
+	````
+	/* index.css中设置样式 */
+	/* 热门视频 start */
+	.hot_video {
+		margin-top: 20upx;
+		padding: 15upx;
+		border: 1px solid black;
+	}
+	.hot_image_title_wrapper {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+	}
+	.hot_image {
+		width: 30upx;
+		height: 30upx;
+	}
+	.hot_title {
+		margin-left: 20upx;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	/* 热门视频 end */
+
+	/* App.vue中设置公共样式 */
+	.page-block {
+		background: #F7F7F7;
+	}
+	````
