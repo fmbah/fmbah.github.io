@@ -8,6 +8,7 @@ categories: Uni App
 ### 项目完善
 13. [可滚动视图区域](https://uniapp.dcloud.io/component/scroll-view)
 	- 初试scroll-view
+
 	````
 	<scroll-view class="page-block hot_video_items" scroll-x="true">
 		视频视频视频视频视频视频视频视频视频视频视频视频视频视频视频
@@ -20,6 +21,7 @@ categories: Uni App
 	}
 	````
 	- 优化后
+
 	````
 	.hot_video {
 		margin-top: 20upx;
@@ -101,6 +103,7 @@ categories: Uni App
 14. `自定义组件`
 	1. 点击项目创建目录-components
 	2. 点击目录创建组件-helloComp.vue
+
 	````
 	<template name="helloComp">
 		<view>
@@ -127,6 +130,7 @@ categories: Uni App
 	</script>
 	````
 	3. 引入自定义组件
+	
 	````
 	<template>
 		<view>
