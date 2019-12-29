@@ -1,0 +1,144 @@
+---
+layout: post
+title:  "uni-app实战6"
+date:   2019-12-29 11:00:00 +0800
+categories: Uni App
+--- 
+
+### 项目完善
+13. [可滚动视图区域](https://uniapp.dcloud.io/component/scroll-view)
+	- 初试scroll-view
+	````
+	<scroll-view class="page-block hot_video_items" scroll-x="true">
+		视频视频视频视频视频视频视频视频视频视频视频视频视频视频视频
+		视频视频视频视频视频视频视频视频视频视频视频视频视频视频视频
+	</scroll-view>
+
+	.hot_video_items {
+		width: 100%;
+		white-space: nowrap;
+	}
+	````
+	- 优化后
+	````
+	.hot_video {
+		margin-top: 20upx;
+		padding: 15upx;
+		/* border: 1px solid black; */
+	}
+	.hot_image_title_wrapper {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+	}
+	.hot_image {
+		width: 30upx;
+		height: 30upx;
+	}
+	.hot_title {
+		margin-left: 20upx;
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+	.hot_video_items {
+		width: 100%;
+		white-space: nowrap;
+	}
+	.hot_video_item {
+		display: inline-block;
+		margin-left: 20upx;
+	}
+	.hot_video_wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+	.hot_video_image {
+		width: 220upx;
+		height: 308upx;
+	}
+	.movie_name {
+		width: 220upx;
+		margin-top: 10px;
+		font-size: 14px;
+		font-weight: bold;
+		/* 电影名超出宽度隐藏 */
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	<scroll-view class="page-block hot_video_items" scroll-x="true">
+		<view class="hot_video_item">
+			<view class="hot_video_wrapper">
+				<image src="../../static/index/hot_video0.jpg" class="hot_video_image"></image>
+				<view class="movie_name">
+					电影名字电影名字电影名字电影名字电影名字电影名字电影名字电影名字电影名字
+					电影名字电影名字电影名字电影名字电影名字电影名字电影名字
+				</view>
+			</view>
+		</view>
+		<view class="hot_video_item">
+			<view class="hot_video_wrapper">
+				<image src="../../static/index/hot_video1.jpg" class="hot_video_image"></image>
+				<view class="movie_name">
+					电影名字电影名字电影名字电影名字电影名字电影名字电影名字电影名字电影名字
+					电影名字电影名字电影名字电影名字电影名字电影名字电影名字
+				</view>
+			</view>
+		</view>
+		<view class="hot_video_item">
+			<view class="hot_video_wrapper">
+				<image src="../../static/index/hot_video2.jpg" class="hot_video_image"></image>
+				<view class="movie_name">
+					电影名字电影名字电影名字电影名字电影名字电影名字电影名字电影名字电影名字
+					电影名字电影名字电影名字电影名字电影名字电影名字电影名字
+				</view>
+			</view>
+		</view>
+	</scroll-view>
+	````
+14. `自定义组件`
+	1. 点击项目创建目录-components
+	2. 点击目录创建组件-helloComp.vue
+	````
+	<template name="helloComp">
+		<view>
+			{{msg}}
+			<input :value="myval" class="red" />
+		</view>
+	</template>
+	<script>
+		export default {
+			// 定义组件名称为helloComp
+			name: "helloComp",
+			data() {
+				return {
+					msg:"这是一个自定义组件"
+				};
+			}
+			// 自定义一个组件，用于接收父组件传入的参数
+			,props:{
+				myval: {
+					type:String //定义这个参数的类型
+				}
+			}
+		}
+	</script>
+	````
+	3. 引入自定义组件
+	````
+	<template>
+		<view>
+			<helloComp myval="自定义组件传入参数"></helloComp>
+	------------------------------------------
+	// 引入自定义组件
+	import helloComp from "../../components/helloComp.vue"
+	------------------------------------------
+	components: {
+		helloComp
+	}
+	````
+	
+15. [视频组件](https://uniapp.dcloud.io/component/video)
+16. [动画](https://uniapp.dcloud.io/api/ui/animation?id=createanimation)
