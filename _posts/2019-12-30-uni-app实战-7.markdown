@@ -1,0 +1,108 @@
+---
+layout: post
+title:  "uni-app实战7"
+date:   2019-12-30 22:30:00 +0800
+categories: Uni App
+--- 
+
+### 项目完善
+17. [动画实战]
+	
+	````
+	rt default {
+		data() {
+			return {
+				animationData: {}
+			}
+		},
+		onUnload() {
+			// 页面卸载的时候，清楚动画数据
+			this.animationData = {}
+		}, 
+		onLoad() {
+			// 避免出现es6语法支持内放方法直接this方法调用
+			var me = this;
+			
+			// 在页面创建的时候，创建一个临时动画对象
+			var animation = uni.createAnimation({
+			});
+			this.animation = animation
+
+	methods: {
+			// 实现点赞动画效果
+			praiseMe() {
+				this.animation.translateY(-60).opacity(1).step({
+					duration:400
+				})
+				
+				// 导出动画数据到绑定元素，实现组件的动画效果
+				this.animationData = this.animation.export();
+				
+				// 还原动画操作
+				setTimeout(function() {
+					this.animation.translateY(0).opacity(0).step({
+						duration:0
+					})
+					this.animationData = this.animation.export()
+				}.bind(this), 500);
+			}
+		},
+
+	<view class="movie-oper">
+		<image @click="praiseMe" src="../../static/index/praise.png" class="praise-ico"></image>
+		<view class="praise-me">
+			点赞
+		</view>
+		<view :animation="animationData" class="praise-me animation-opacity">
+			+1
+		</view>
+	</view>
+	````
+
+18. `下拉刷新`
+	````
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				// 如果 h5 节点没有配置，默认会使用 app-plus 下的配置。
+				"app-plus": {
+					"titleNView": false //禁用原生导航栏
+				},
+				// 开启单页面下拉刷新功能
+				"enablePullDownRefresh": true
+			}
+		}
+
+	 // 监听下拉刷新操作
+	onPullDownRefresh() {
+		// 刷新猜你喜欢数据
+		this.refreshULike()
+	},
+
+	// 获取猜你喜欢数据
+	uni.request({
+		url: serverUrl + '/movieNotice',
+		success: (res) => {
+			console.log(res.data);
+			me.guessULikeList = res.data;
+		},
+		complete: () => {
+			// 关闭下拉刷新
+			uni.stopPullDownRefresh()
+		}
+	});
+	````
+19. `遮罩`
+	````
+	// 开启遮罩
+	uni.showLoading({
+		mask: true
+	})
+	// ​​在当前页面显示导航条加载动画
+	uni.showNavigationBarLoading()
+	// 隐藏遮罩
+	uni.hideLoading()
+	uni.hideNavigationBarLoading()
+	````
