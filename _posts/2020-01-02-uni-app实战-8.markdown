@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "uni-app实战8"
+date:   2020-01-02 22:30:00 +0800
+categories: Uni App
+--- 
+
+### 项目完善
+17. [输入框](https://uniapp.dcloud.io/component/input)
+    - confirm-type="search"
+    - maxlength="10"
+    - placeholder="搜索预告"
+    - onReachBottom
+    - concat 
+
+18. [json server 分页接口](https://github.com/typicode/json-server)
+    - /posts?_sort=user,views&_order=desc,asc
+    - /posts?_page=7&_limit=20
+    - /posts?title_like=server
+    - /posts?id_lte=100
+    - /posts?id_ne=1
+
+19. [页面路由API与传参](https://uniapp.dcloud.io/api/router?id=navigateto)
+    - 接口
+        ````
+        // 注意此处获取绑定自定义属性值要'小写' :data-noticeId="notice.id"
+        console.log(e.currentTarget.dataset.noticeid)
+        uni.navigateTo({
+            url:"../movie/movie?noticeId=" + e.currentTarget.dataset.noticeid
+        })
+
+        // 下一个页面的onLoad方法里
+        onLoad(params) {
+			console.log(params)
+		}
+        ````
+        - uni.redirectTo({url: 'test?id=1'})
+        - uni.reLaunch({url: 'test?id=1'})
+        - uni.switchTab({url: '/pages/index/index'})
+        - 
+    - 组件
+
+20. [图片](https://uniapp.dcloud.io/component/image)
+    - 路径
+    - 模式
