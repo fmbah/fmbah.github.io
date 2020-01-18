@@ -43,3 +43,19 @@ categories: Uni App
 20. [图片](https://uniapp.dcloud.io/component/image)
     - 路径
     - 模式
+
+21. [图片预览API](https://uniapp.dcloud.io/api/media/image?id=previewimage)
+    ````
+    uni.chooseImage({
+        count: 6, //默认9
+        sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album'], //从相册选择
+        success: function (res) {
+            console.log(JSON.stringify(res.tempFilePaths));
+        }
+    });
+    ````
+22. [图片保存](https://uniapp.dcloud.io/api/media/image?id=saveimagetophotosalbum)
+23. [图片下载](https://uniapp.dcloud.io/api/request/network-file?id=downloadfile)
+24. `配置https下载合法域名`
+    - 小程序后台->开发-配置-域名（可添加端口号）
