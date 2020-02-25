@@ -1,0 +1,286 @@
+---
+layout: post
+title:  "uni-app实战9"
+date:   2020-01-21 09:22:00 +0800
+categories: Uni App
+--- 
+
+### 项目完善
+25. [分享](https://uniapp.dcloud.io/api/plugins/share?id=onshareappmessage)
+    ````
+    // 此函数仅仅支持在小程序端的分享，分享到微信群或者微信好友
+    onShareAppMessage(res) {
+        if (res.from === 'button') {// 来自页面内分享按钮
+            console.log(res.target)
+        }
+        return {
+            title: '分享',
+            path: '/pages/movie/movie?id=' + me.trailerInfo.id
+        }
+    },
+    ````
+26. [自定义导航栏]
+    1. [自定义原生导航栏](https://uniapp.dcloud.io/collocation/pages?id=app-titlenview)
+    2. [监听导航栏按钮](https://uniapp.dcloud.io/collocation/frame/lifecycle)
+    3. [触发分享至微信朋友圈](https://uniapp.dcloud.io/api/plugins/share?id=share)
+    ````
+    {
+            "path" : "pages/movie/movie",
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"type":"transparent",
+						"buttons": [
+							{
+								"text":"分享",
+								"type":"share"
+							},
+							{
+								"text":"后退",
+								"type":"back"
+							},
+							{
+								"text":"首页",
+								"type":"home"
+							}
+						]
+					}
+				}
+				}
+        }
+    
+    --------------------------------
+
+    // 监听原生标题栏按钮点击事件
+		onNavigationBarButtonTap : function (e) {
+			// e的返回格式为json对象：{"text":"测试","index":0}
+		    console.log(e);
+			var index = e.index
+			// 分享按钮
+			if (0 == index) {
+				// href、imageUrl 为必选参数，title/summary 二选一，最好将这四个参数都选上。
+				// 同时打开APP，点击页面无响应===》配置manifest.json中APP SDK权限配置
+				uni.share({
+				    provider: "weixin",
+				    scene: "WXSenceTimeline",
+				    type: 0,
+				    href: "http://uniapp.dcloud.io/",
+				    title: "uni-app分享",
+				    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+				    imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
+				    success: function (res) {
+				        console.log("success:" + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log("fail:" + JSON.stringify(err));
+				    }
+				});
+			}
+        }
+    ````
+    
+27. [操作视频对象](https://uniapp.dcloud.io/api/media/video-context?id=createvideocontext)
+    ````
+    <video 
+    id="myVideo"
+    :src="trailerInfo.trailer"
+    :poster="trailerInfo.poster"
+        class="movie" controls></video>
+    -------------------------------
+    onReady: function (res) {
+			this.videoContext = uni.createVideoContext('myVideo')
+		},
+		onShow() {
+			if (this.videoContext) {
+				this.videoContext.play()
+			}
+		},
+		onHide() {
+			this.videoContext.pause()
+		},
+    ````
+
+28. [表单组件](https://uniapp.dcloud.io/component/button)
+	````
+	<form @submit="fromSubmit" >
+		<view class="info-wrapper">
+			<label class="words-lbl">账号</label>
+			<input  type="text" 
+					name="username" 
+					value=""
+					class="input"
+					placeholder="请输入用户名"
+					placeholder-class="graywords"/>
+		</view>
+					
+		<view class="info-wrapper" style="margin-top: 40upx;">
+			<label class="words-lbl">密码</label>
+			<input  type="text" 
+					name="password" 
+					value=""
+					password="true"
+					class="input"
+					placeholder="请输入密码"
+					placeholder-class="graywords"/>			
+		
+		<button type="primary" form-type="submit" style="margin-top: 60upx; width: 90%;" >注册 / 登录</button>
+		
+		</view>
+	</form>
+	````
+29. [缓存](https://uniapp.dcloud.io/api/storage/storage?id=setstoragesync)
+	````
+			// 将登录用户缓存至全局应用中
+			uni.setStorageSync("globalUser", res.data[0])
+
+
+			// 获取缓存
+			var globalUser = uni.getStorageSync("globalUser")
+			
+			console.log("从全局缓存中同步取出用户信息")
+			console.log(globalUser)
+			if (null != globalUser && "" != globalUser && undefined != globalUser) {
+				me.userIsLogin = true
+				me.userInfo = globalUser
+			} else {
+				me.userIsLogin = false
+				me.userInfo = {}
+			}
+
+			// 清除用户缓存
+			uni.clearStorage()
+				
+			uni.showToast({
+				title:"清理缓存成功",
+				mask:false,
+				duration:1500
+			})
+
+			logout() {
+				var globalUser = this.getGlobalUser("globalUser")
+				if (null != globalUser) {
+					
+					// 向后台发起退出登录请求
+					
+					// 移除指定key缓存
+					uni.removeStorageSync("globalUser")
+					uni.switchTab({
+						url:'../me/me'
+					})	
+				}
+			}
+	````
+
+30. 挂载方法、变量
+	````
+	// 自定义属性挂载全局变量,各个文件可通过this直接调用
+	Vue.prototype.serverUrl = "http://106.13.81.173:9280";
+
+	// 自定义方法挂载全局,各个文件可通过this直接调用
+	Vue.prototype.getGlobalUser = function(key) {
+		var globalUser = uni.getStorageSync(key)
+		
+		console.log("从全局缓存中同步取出用户信息")
+		console.log(globalUser)
+		if (null != globalUser && "" != globalUser && undefined != globalUser) {
+			return globalUser
+		} else {
+			return null
+		}
+	}
+	````
+31. [第三方登录](https://uniapp.dcloud.io/api/plugins/login)
+	````
+		<!-- 第三登录H5不支持，所以隐藏掉 -->
+		<!-- 5+APP 用QQ登录 小程序用微信小程序登录 H5不支持 -->
+		<!-- #ifdef APP-PLUS -->
+			<image src="../../static/regist/qq.png" class="third-ico" data-logintype="qq" @click="appOAuthLogin"></image>
+			<image src="../../static/regist/wechat.png" class="third-ico" data-logintype="weixin" @click="appOAuthLogin" style="margin-left: 80upx;"></image>
+			<image src="../../static/regist/weibo.png" class="third-ico" data-logintype="sinaweibo" @click="appOAuthLogin" style="margin-left: 80upx;"></image>
+		<!-- #endif -->
+		<!-- #ifdef MP-WEIXIN -->
+			<button open-type="getUserInfo" 
+				@getuserinfo="wxLogin" class="third-btn-ico"></button>
+		<!-- #endif -->
+
+		// 实现IOS ANDROID QQ 微信 微博一键登录注册
+		appOAuthLogin(e) {
+				var me = this
+				// 获取登录类型
+				var logintype = e.currentTarget.dataset.logintype
+				
+				// 授权登录
+				uni.login({
+					provider:logintype,
+					success(loginResult) {
+						console.log(loginResult)
+						
+						// 授权登录成功以后，获取用户信息
+						uni.getUserInfo({
+							provider:logintype,
+							success(info) {
+								console.log(JSON.stringify(info))
+							
+								// 执行后台登录注册接口
+							}
+						})
+					}
+				})
+			},
+			// 实现微信小程序端登录
+			wxLogin(e) {
+				console.log(e)
+				
+				var me = this
+				var serverUrl = me.serverUrl
+				var userInfo = e.detail.userInfo
+				
+				// 实现微信登录
+				uni.login({
+					provider:'weixin',
+					success(loginResult) {
+						console.log(loginResult)
+						
+						// 向后端发起登录请求
+
+		// manifest.json，配置第三方服务相应内容
+	````
+32. [选择图片](https://uniapp.dcloud.io/api/media/image?id=chooseimage)
+	````
+	uni.chooseImage({
+		count:1,
+		sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+		sourceType: ['album'], //从相册选择
+		success: function (res) {
+			console.log(JSON.stringify(res.tempFilePaths))
+			var filePath = res.tempFilePaths[0]
+			
+			// 从相册选择上传
+			uni.navigateTo({
+				url:'../meFace/meFace?filePath=' + filePath
+			})
+		}
+	})
+	````
+33. [上传图片](https://uniapp.dcloud.io/api/request/network-file?id=uploadfile)
+	````
+	uni.chooseImage({
+		success: (chooseImageRes) => {
+			const tempFilePaths = chooseImageRes.tempFilePaths;
+			uni.uploadFile({
+				url: 'https://www.example.com/upload', //仅为示例，非真实的接口地址
+				filePath: tempFilePaths[0],
+				name: 'file',
+				header: {
+					"userId": "123123"
+				},
+				formData: {
+					'user': 'test'
+				},
+				success: (uploadFileRes) => {
+					console.log(uploadFileRes.data);
+				}
+			});
+		}
+	});
+	````
